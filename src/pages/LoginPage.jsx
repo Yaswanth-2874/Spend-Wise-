@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const validator = require("validator");
 
 const LoginPage = () => {
+  const [isValidEmail, setIsValidEmail] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const textBoxStyle = {
@@ -46,8 +48,14 @@ const LoginPage = () => {
         id="outlined-basic"
         label="Email"
         variant="outlined"
+        type="email"
         style={textBoxStyle}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => {
+          setEmail(e.target.value);
+          setIsValidEmail(validator.isEmail(e.target.value));
+        }}
+        error={!isValidEmail}
+        helperText={!isValidEmail && "Enter valid email"}
       />
       <TextField
         id="outlined-password-input"
