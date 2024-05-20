@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  IconButton,
   TextField,
   InputLabel,
   Select,
@@ -14,29 +13,33 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const AddNewItem = (props) => {
-  const { email } = props;
+  const { email, setUpdateData } = props;
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [cost, setCost] = useState("");
   const [isExpenditure, setIsExpenditure] = useState(true);
   const [isNumber, setIsNumber] = useState(true);
+  const [loading, setLoading] = useState(false);
   const handleClick = () => {
     setIsNumber(!isNaN(cost));
     if (cost === "" || isNaN(cost) || !category) {
       alert("Enter valid cost fool");
       return;
     }
+    setLoading(true);
+    setUpdateData((prevState) => prevState + 1);
     axios
       .put(`http://localhost:4000/users/${email}`, {
         category: category,
         description: description,
-        cost: cost,
+        cost: parseFloat(cost),
         balance: 2100,
         isExpenditure: isExpenditure,
       })
-      .then(() => alert("Success in insertion of data"))
+      .then(() => setLoading(false))
       .catch((e) => console.log(e));
   };
 
@@ -95,9 +98,9 @@ const AddNewItem = (props) => {
         error={!isNumber}
         helperText={!isNumber && "Enter a valid Amount"}
       />
-      <IconButton size="large" onClick={handleClick}>
-        <AddIcon fontSize="large" />
-      </IconButton>
+      <LoadingButton size="large" onClick={handleClick} loading={loading}>
+        Add Item <AddIcon fontSize="medium" />
+      </LoadingButton>
     </form>
   );
 };

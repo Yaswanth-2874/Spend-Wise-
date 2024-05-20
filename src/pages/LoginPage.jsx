@@ -27,7 +27,7 @@ const LoginPage = () => {
         } else if (response.data.status === "bad") {
           alert("Incorrect credentials");
         } else {
-          navigate("/", { state: response.data });
+          navigate("/", {email : email, password : password});
         }
       })
       .catch((e) => console.log("Not able to login due to ", e));
@@ -68,6 +68,7 @@ const LoginPage = () => {
       <Button variant="outlined" onClick={handleClick} style={buttonStyle}>
         Log In
       </Button>
+      <Button variant="outlined" href="/register"> Create New Account</Button>
     </form>
   );
 };

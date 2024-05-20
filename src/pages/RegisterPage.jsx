@@ -88,6 +88,7 @@ const RegisterPage = () => {
       <Button variant="outlined" onClick={handleClick} style={buttonStyle}>
         Register
       </Button>
+      <Button variant="outlined" href="/login">Login into existing Account</Button>
     </form>
   );
 };
